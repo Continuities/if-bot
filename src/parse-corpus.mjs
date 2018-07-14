@@ -51,10 +51,18 @@ stream.on('readable', () => {
   if (done) {
     return;
   }
+
+  const transitions = Object.entries(counts).reduce((acc, [key, value]) => {
+    acc[key] = Object.entries(value.next).reduce((ret, [to, count]) => {
+      ret[to] = count / value.total;
+      return ret;
+    }, {});
+    return acc;
+  }, {});
   
   const output = {
     spaceSize: argv.space,
-    counts
+    transitions
   };
 
   console.log('Writing output...');
