@@ -1,4 +1,4 @@
-const SEPARATOR = '---';
+export const SEPARATOR = '---';
 
 /**
  * Turns an Iterable of tokens into an Iterable of adjacent token groups
