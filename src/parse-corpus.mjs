@@ -9,7 +9,9 @@ const argv = yargs
     .alias('c', 'corpus')
     .alias('o', 'out')
     .alias('s', 'space')
+    .alias('v', 'verbose')
     .default('space', 2)
+    .default('verbose', false)
     .demandOption(['corpus', 'out'])
     .argv;
 
@@ -36,7 +38,12 @@ stream.on('readable', () => {
   let done = true;
   for (let token of iter) {
     done = false;
-    const key = token.slice(0, argv.space).join(' ');
+    
+    if (token.length < 2) {
+      continue;
+    }
+
+    const key = token.slice(0, -1).join(' ');
     const value = token[token.length - 1];
     if (!counts[key]) {
       counts[key] = {
@@ -64,6 +71,8 @@ stream.on('readable', () => {
     spaceSize: argv.space,
     transitions
   };
+
+  argv.verbose && console.log(output);
 
   console.log('Writing output...');
   fs.writeFile(argv.out, JSON.stringify(output), () => {
