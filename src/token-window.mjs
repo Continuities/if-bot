@@ -1,3 +1,4 @@
+/** The separator between corpus paragraphs */
 export const SEPARATOR = '---';
 
 /**
